@@ -31,8 +31,8 @@ class BottomNavBar extends StatelessWidget{
               label: 'Not Defterim'
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.favorite),
-              label: 'Favorite'
+              icon: Icon(Icons.access_time),
+              label: 'Son Eklenenler'
           )
         ]
     );

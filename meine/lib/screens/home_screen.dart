@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:meine/screens/favorites_book_provider.dart';
+import 'package:meine/screens/floating_action_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:meine/core/LocalManager.dart';
 import 'package:meine/screens/add_book_screen.dart';
@@ -19,13 +19,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   Set<String> favoriteBooks = {}; // Favori kitapları saklayan Set
-
-  final List<Widget> _screens = [
-    Center(child: Text('Ana Sayfa', style: TextStyle(fontSize: 24))),
-    ProfileScreen(),
-    SettingsScreen(),
-    CrudScreen(),
-  ];
 
   void _onItemTapped(int index) async {
     if (index == 1) {
@@ -68,23 +61,44 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               children: [
-                _buildBookRow("assets/images/a.jpg", "Kitap Adı 1", "Yazar 1",
-                    "assets/images/b.jpg", "Kitap Adı 2", "Yazar 2"),
-                _buildBookRow("assets/images/c.jpg", "Kitap Adı 3", "Yazar 3",
-                    "assets/images/d.jpg", "Kitap Adı 4", "Yazar 4"),
+                Expanded(
+                  child: ListView(
+                    children: [
+                      _buildBookRow("assets/images/a.jpg", "Kitap Adı 1", "Yazar 1",
+                          "assets/images/b.jpg", "Kitap Adı 2", "Yazar 2"),
+                      _buildBookRow("assets/images/c.jpg", "Kitap Adı 3", "Yazar 3",
+                          "assets/images/d.jpg", "Kitap Adı 4", "Yazar 4"),
+                      _buildBookRow("assets/images/e.jpg", "Kitap Adı 5", "Yazar 5",
+                          "assets/images/f.jpg", "Kitap Adı 6", "Yazar 6"),
+                      _buildFirebaseBooks(), // Firebase kitaplarını ekle
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
           ProfileScreen(),
           SettingsScreen(),
           CrudScreen(),
-FavoriteBooksScreen()
+          FloatingActionScreen(),
         ],
       ),
       bottomNavigationBar: BottomNavBar(
         selectedIndex: _selectedIndex,
         onTop: _onItemTapped,
       ),
+      floatingActionButton: _selectedIndex == 0
+          ? FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddBookScreen()),
+          );
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.blue, // Buton rengi
+      )
+          : null, // Diğer sayfalarda görünmemesi için null
     );
   }
 
@@ -99,7 +113,7 @@ FavoriteBooksScreen()
     );
   }
 
-  Widget _buildBookCard(String imagePath, String bookName, String authorName) {
+  Widget _buildBookCard(String imagePath, String bookName, String authorName, {bool isNetworkImage = false}) {
     double cardWidth = (MediaQuery.of(context).size.width - 48) / 2;
 
     return Container(
@@ -117,7 +131,14 @@ FavoriteBooksScreen()
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
-                  child: Image.asset(
+                  child: isNetworkImage
+                      ? Image.network(
+                    imagePath,
+                    height: 120,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  )
+                      : Image.asset(
                     imagePath,
                     height: 120,
                     width: double.infinity,
@@ -177,5 +198,39 @@ FavoriteBooksScreen()
         ),
       ),
     );
+  }
+
+  Widget _buildFirebaseBooks() {
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('books').orderBy('timestamp', descending: true).snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return Center(child: Text('Henüz kitap eklenmedi.'));
+          }
+
+          List<Widget> bookCards = [];
+          for (var i = 0; i < snapshot.data!.docs.length; i += 2) {
+            var book1 = snapshot.data!.docs[i];
+            var book2 = (i + 1 < snapshot.data!.docs.length) ? snapshot.data!.docs[i + 1] : null;
+
+            bookCards.add(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildBookCard(book1['imageUrl'], book1['title'], book1['author'], isNetworkImage: true),
+                  book2 != null
+                      ? _buildBookCard(book2['imageUrl'], book2['title'], book2['author'], isNetworkImage: true)
+                      : SizedBox(width: (MediaQuery.of(context).size.width - 48) / 2),
+                ],
+              ),
+            );
+          }
+
+          return Column(children: bookCards);
+         },
+     );
   }
 }
