@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "610240444699",
+    "project_id": "meine-bb573",
+    "storage_bucket": "meine-bb573.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:610240444699:android:f041b324543102de0bfbbe",
+        "android_client_info": {
+          "package_name": "com.meine.meine"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbg3-hcFMLaJ7mrZmWLJEYZXEldoM82rM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
