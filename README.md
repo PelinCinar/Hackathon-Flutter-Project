@@ -16,8 +16,6 @@ Firebase Authentication (Kullanıcı kimlik doğrulama)
 
 Cloud Firestore (Veri depolama)
 
-Firebase Storage (Resim yükleme)
-
 Localization Desteği (Çoklu dil desteği)
 
 Provider (State Management)
