@@ -29,6 +29,7 @@ Shared Preferences (Veri saklama)
 ✅ Firebase Authentication – Kullanıcılar güvenli bir şekilde kayıt olup giriş yapabilir.
 ✅ Localization Desteği – Uygulama birden fazla dil desteği sunarak global kullanım için optimize edilmiştir.
 ✅ Kullanıcı Dostu & Responsive Tasarım – Farklı ekran boyutlarına uyum sağlayan, modern ve şık bir arayüz.
-![Adsız tasarım (2)](https://github.com/user-attachments/assets/882d7d58-56f5-4851-9012-c7440c77233f)
+
+![Adsız tasarım (2)](https://github.com/user-attachments/assets/7333887a-9981-4228-9775-0791dac9c0e5)
 
 
