@@ -30,6 +30,6 @@ Shared Preferences (Veri saklama)
 ✅ Localization Desteği – Uygulama birden fazla dil desteği sunarak global kullanım için optimize edilmiştir.
 ✅ Kullanıcı Dostu & Responsive Tasarım – Farklı ekran boyutlarına uyum sağlayan, modern ve şık bir arayüz.
 
-![Adsız tasarım (2)](https://github.com/user-attachments/assets/7333887a-9981-4228-9775-0791dac9c0e5)
 
 
+![Adsız tasarım (4)](https://github.com/user-attachments/assets/8cc2c09d-e6e7-4e00-905a-2814c95f13ed)
